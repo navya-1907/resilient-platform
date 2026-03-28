@@ -22,6 +22,7 @@ func main() {
 
 // API: list containers
 func getContainers(w http.ResponseWriter, r *http.Request) {
+	enableCORS(w)
 	cli := getDockerClient()
 
 	containers, err := cli.ContainerList(context.Background(), container.ListOptions{All: true})
@@ -76,4 +77,10 @@ func getDockerClient() *client.Client {
 		log.Fatal(err)
 	}
 	return cli
+}
+
+func enableCORS(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 }
